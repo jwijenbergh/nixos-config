@@ -14,8 +14,7 @@ in
       shellAbbrs = {
         ls = "exa -l";
         ll = "exa -al";
-        vifm = "vifm .";
-        f = "vifm .";
+        f = "lf";
       };
       promptInit = ''
         any-nix-shell fish | source
@@ -36,6 +35,8 @@ in
       userEmail = "jeroenwijenbergh@protonmail.com";
     };
   };
+
+  # lf config
   xdg.configFile = {
     "lf/lfrc".source = ./lfrc;
   };
