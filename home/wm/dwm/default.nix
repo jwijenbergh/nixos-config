@@ -4,6 +4,48 @@ let
   theme = (import ../themes).current;
 in
   {
+    home.packages = with pkgs; [
+
+      # Bar
+      (
+        writeScriptBin "dwmbar" ''
+#!/bin/sh
+
+_date() {
+        echo  "$(date '+%H:%M - %d %B')"
+}
+
+_vol() {
+        echo  "$(pulsemixer --get-volume | awk '{print $1}')"
+}
+
+trap 'echo "SIGUSR1, reloading...."' USR1
+
+while :
+do
+        xsetroot -name " $(_vol) | $(_date)"
+        sleep 60 &
+        wait $!
+done
+        ''
+      )
+
+      # Refresh Bar
+      (
+        writeScriptBin "refdwmbar" ''
+#!/bin/sh
+
+pkill -SIGUSR1 dwmbar
+        ''
+      )
+
+      # Packages
+      dwm
+      dmenu
+    ];
+
+
+
     imports = [ ../../server/x11.nix ];
 
     nixpkgs.overlays = [
@@ -19,15 +61,15 @@ in
       })
     ];
 
-    home.packages = [ pkgs.dwm pkgs.dmenu ];
 
     home.file.".xprofile".text = ''
       feh --bg-scale "$HOME/Pictures/Wallpapers/current.png"
+      dwmbar &
     '';
 
     xsession.windowManager.command = ''
       while true; do
-      ${pkgs.dwm}/bin/dwm >/dev/null 2>&1
+        ${pkgs.dwm}/bin/dwm >/dev/null 2>&1
       done
     '';
 
