@@ -17,9 +17,9 @@ in
         vifm = "vifm .";
         f = "vifm .";
       };
-	  promptInit = ''
-		any-nix-shell fish | source
-	  '';
+      promptInit = ''
+        any-nix-shell fish | source
+      '';
       shellInit = ''
         function fish_greeting; end
         set -U fish_prompt_pwd_dir_length 0
