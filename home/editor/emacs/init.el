@@ -41,7 +41,7 @@
 (use-package evil-magit
   :after evil
   :demand t)
-                                        ; Much faster than counsel-fzf
+					; Much faster than counsel-fzf
 (use-package fzf
   :demand t
   :init
@@ -50,7 +50,7 @@
 (use-package magit
   :demand t
   :config
-                                        ; automatically refresh magit buffer
+					; automatically refresh magit buffer
   (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
 
 (use-package nix-mode
@@ -63,7 +63,7 @@
   :demand t
   :init
   (add-hook 'org-mode-hook (lambda ()
-                             (visual-line-mode 1)))
+			     (visual-line-mode 1)))
   :config
   (setq org-startup-indented t))
 
@@ -71,7 +71,7 @@
   :demand t
   :init
   (add-hook 'org-mode-hook (lambda ()
-                             (org-bullets-mode 1))))
+			     (org-bullets-mode 1))))
 
 (use-package rust-mode
   :demand t
@@ -82,11 +82,11 @@
   :demand t
   :init
   (setq telephone-line-primary-left-separator 'telephone-line-gradient
-        telephone-line-secondary-left-separator 'telephone-line-nil
-        telephone-line-primary-right-separator 'telephone-line-gradient
-        telephone-line-secondary-right-separator 'telephone-line-nil)
+	telephone-line-secondary-left-separator 'telephone-line-nil
+	telephone-line-primary-right-separator 'telephone-line-gradient
+	telephone-line-secondary-right-separator 'telephone-line-nil)
   (setq telephone-line-height 24
-        telephone-line-evil-use-short-tag t)
+	telephone-line-evil-use-short-tag t)
   :config
   (telephone-line-mode 1))
 
@@ -113,10 +113,10 @@
     (when (not (file-directory-p dir))
       (make-directory dir t)))
   (setq backup-directory-alist `(("." . ,backup-dir))
-        auto-save-file-name-transforms `((".*" ,auto-saves-dir t))
-        auto-save-list-file-prefix (concat auto-saves-dir ".saves-")
-        tramp-backup-directory-alist `((".*" . ,backup-dir))
-        tramp-auto-save-directory auto-saves-dir))
+	auto-save-file-name-transforms `((".*" ,auto-saves-dir t))
+	auto-save-list-file-prefix (concat auto-saves-dir ".saves-")
+	tramp-backup-directory-alist `((".*" . ,backup-dir))
+	tramp-auto-save-directory auto-saves-dir))
 
 (setq backup-by-copying t    ; Don't delink hardlinks                           
       delete-old-versions t  ; Clean up the backups                             
@@ -126,11 +126,11 @@
 
 
 (setq auto-mode-alist
-	      (cons '("\\.horn$" . proverif-horn-mode) 
-	      (cons '("\\.horntype$" . proverif-horntype-mode) 
-	      (cons '("\\.pv$" . proverif-pv-mode) 
-              (cons '("\\.pi$" . proverif-pi-mode) auto-mode-alist)))))
-        (autoload 'proverif-pv-mode "proverif" "Major mode for editing ProVerif code." t)
-        (autoload 'proverif-pi-mode "proverif" "Major mode for editing ProVerif code." t)
-        (autoload 'proverif-horn-mode "proverif" "Major mode for editing ProVerif code." t)
-        (autoload 'proverif-horntype-mode "proverif" "Major mode for editing ProVerif code." t)
+      (cons '("\\.horn$" . proverif-horn-mode) 
+	    (cons '("\\.horntype$" . proverif-horntype-mode) 
+		  (cons '("\\.pv$" . proverif-pv-mode) 
+			(cons '("\\.pi$" . proverif-pi-mode) auto-mode-alist)))))
+(autoload 'proverif-pv-mode "proverif" "Major mode for editing ProVerif code." t)
+(autoload 'proverif-pi-mode "proverif" "Major mode for editing ProVerif code." t)
+(autoload 'proverif-horn-mode "proverif" "Major mode for editing ProVerif code." t)
+(autoload 'proverif-horntype-mode "proverif" "Major mode for editing ProVerif code." t)

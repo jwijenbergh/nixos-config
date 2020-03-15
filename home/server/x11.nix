@@ -22,12 +22,12 @@ in
     compton = {
       enable = true;
       vSync = "opengl-swc";
-	};
-	screen-locker = {
+    };
+    screen-locker = {
       enable = true;
-	  inactiveInterval = 10;
+      inactiveInterval = 10;
       lockCmd = "${pkgs.betterlockscreen}/bin/betterlockscreen --lock blur";
-	};
+    };
   };
 
   xsession = {

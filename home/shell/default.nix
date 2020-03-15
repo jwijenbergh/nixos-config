@@ -3,7 +3,7 @@
 let
   unstable = import <nixpkgs-unstable> {};
 in
-{
+  {
   # Set shell packages
   home.packages = with pkgs; [ unstable.any-nix-shell exa gotop ripgrep tealdeer ];
 

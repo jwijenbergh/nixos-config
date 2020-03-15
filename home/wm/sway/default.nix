@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   imports = [ ../../server/wayland.nix
-              ./waybarstyle.nix ];
+  ./waybarstyle.nix ];
 
   # Sway .config files
   xdg.configFile = {

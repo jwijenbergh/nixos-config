@@ -2,11 +2,11 @@
 let
   theme = (import ../../themes/default.nix).current;
 in
-{
+  {
   # Import X11 and Polybar
   imports = [ ../../server/x11.nix
-              ./polybar.nix
-              ./sxhkd.nix ];
+  ./polybar.nix
+  ./sxhkd.nix ];
 
   # Bspwm settings
   xsession.windowManager.bspwm = {
