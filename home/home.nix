@@ -14,7 +14,7 @@ in
     ./terminal # Termite
     ./wm # Dwm
   ];
-  
+
   # Base packages
   home.packages = with pkgs; [
     discord
@@ -23,7 +23,6 @@ in
     font-awesome_4
     hack-font
     htop
-    lf
     mpv
     neofetch
     pass

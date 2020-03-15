@@ -5,7 +5,7 @@ let
 in
   {
   # Set shell packages
-  home.packages = with pkgs; [ unstable.any-nix-shell exa gotop ripgrep tealdeer ];
+  home.packages = with pkgs; [ unstable.any-nix-shell exa gotop lf ripgrep tealdeer ];
 
   # Shell packages that need some configuration
   programs = {
@@ -21,6 +21,7 @@ in
         any-nix-shell fish | source
       '';
       shellInit = ''
+        set -gx EDITOR nvim
         function fish_greeting; end
         set -U fish_prompt_pwd_dir_length 0
       '';
@@ -34,5 +35,8 @@ in
       userName = "Jeroen Wijenbergh";
       userEmail = "jeroenwijenbergh@protonmail.com";
     };
+  };
+  xdg.configFile = {
+    "lf/lfrc".source = ./lfrc;
   };
 }
