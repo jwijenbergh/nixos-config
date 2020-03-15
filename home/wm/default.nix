@@ -1,0 +1,4 @@
+{
+  # Current wm
+  imports = [ ./dwm ];
+}
