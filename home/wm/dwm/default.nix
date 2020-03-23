@@ -11,6 +11,10 @@ in
         writeScriptBin "dwmbar" ''
 #!/bin/sh
 
+_bat() {
+        echo  "$(cat /sys/class/power_supply/BAT0/capacity)"%
+}
+
 _date() {
         echo  "$(date '+%H:%M - %d %B')"
 }
@@ -23,7 +27,7 @@ trap 'echo "SIGUSR1, reloading...."' USR1
 
 while :
 do
-        xsetroot -name " $(_vol) | $(_date)"
+        xsetroot -name "$(_bat)  $(_vol)  $(_date)"
         sleep 60 &
         wait $!
 done
