@@ -3,7 +3,7 @@ let
   unstable = import <nixpkgs-unstable> {};
 in
 {
-  home.packages = with pkgs; [ betterlockscreen feh flameshot xss-lock ];
+  home.packages = with pkgs; [ betterlockscreen feh flameshot ];
 
   home.keyboard.options = [ "ctrl:nocaps" ];
 
