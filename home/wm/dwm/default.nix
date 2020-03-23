@@ -48,8 +48,6 @@ pkill -SIGUSR1 dwmbar
       dmenu
     ];
 
-
-
     imports = [ ../../server/x11.nix ];
 
     nixpkgs.overlays = [
@@ -58,8 +56,8 @@ pkill -SIGUSR1 dwmbar
           src = super.fetchFromGitHub {
             repo = "dwm";
             owner = "jwijenbergh";
-            rev = "03095377fbeae6e5b66cc6dbbb5c0d09bd47f62c";
-            sha256 = "0r42w8jf9fcp2cn4mwsr8ga4570ah6fxyrwxz6rwp31zkl7441hy";
+            rev = "751059b11654ca9d224d765fb53af08c4e7afcbc";
+            sha256 = "06fvb59wfrs2qcqkvh8g98x2rhgldp702f9ln8j45n1g8j8659x2";
           };
         });
       })
