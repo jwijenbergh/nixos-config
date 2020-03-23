@@ -27,7 +27,7 @@ trap 'echo "SIGUSR1, reloading...."' USR1
 
 while :
 do
-        xsetroot -name "$(_bat)  $(_vol)  $(_date)"
+        xsetroot -name " $(_bat)  $(_vol)  $(_date)"
         sleep 60 &
         wait $!
 done
