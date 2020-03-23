@@ -7,7 +7,7 @@ in
   # Set shell packages
   home.packages = with pkgs; [ unstable.any-nix-shell exa gotop lf ripgrep tealdeer ];
 
-  # Shell packages that need some configuration
+  # Shell (+packages that need some configuration)
   programs = {
     fish = {
       enable = true;
@@ -34,10 +34,5 @@ in
       userName = "Jeroen Wijenbergh";
       userEmail = "jeroenwijenbergh@protonmail.com";
     };
-  };
-
-  # lf config
-  xdg.configFile = {
-    "lf/lfrc".source = ./lfrc;
   };
 }
