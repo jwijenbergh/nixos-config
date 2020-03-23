@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  theme = (import ../themes).current;
+  env = import ../env.nix;
   unstable = import <nixpkgs-unstable> {};
 in
 {
@@ -21,23 +21,24 @@ in
   home.packages = [ pkgs.st ];
 
   xresources.extraConfig = ''
-      st.foreground: ${theme.foreground}
-      st.background: ${theme.background}
-      st.color0: ${theme.color0}
-      st.color8: ${theme.color8}
-      st.color1: ${theme.color1}
-      st.color9: ${theme.color9}
-      st.color2: ${theme.color2}
-      st.color10: ${theme.color10}
-      st.color3: ${theme.color3}
-      st.color11: ${theme.color11}
-      st.color4: ${theme.color4}
-      st.color12: ${theme.color12}
-      st.color5: ${theme.color5}
-      st.color13: ${theme.color13}
-      st.color6: ${theme.color6}
-      st.color14: ${theme.color14}
-      st.color7: ${theme.color7}
-      st.color15: ${theme.color15}
+      st.font:       ${env.font}:pixelsize=14
+      st.foreground: ${env.theme.foreground}
+      st.background: ${env.theme.background}
+      st.color0:     ${env.theme.color0}
+      st.color8:     ${env.theme.color8}
+      st.color1:     ${env.theme.color1}
+      st.color9:     ${env.theme.color9}
+      st.color2:     ${env.theme.color2}
+      st.color10:    ${env.theme.color10}
+      st.color3:     ${env.theme.color3}
+      st.color11:    ${env.theme.color11}
+      st.color4:     ${env.theme.color4}
+      st.color12:    ${env.theme.color12}
+      st.color5:     ${env.theme.color5}
+      st.color13:    ${env.theme.color13}
+      st.color6:     ${env.theme.color6}
+      st.color14:    ${env.theme.color14}
+      st.color7:     ${env.theme.color7}
+      st.color15:    ${env.theme.color15}
   '';
 }
