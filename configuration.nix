@@ -5,9 +5,7 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-    [ 
+  imports = [ 
     # XPS 13 9350 is pretty much the xps 15 9550 but 13 inch
     <nixos-hardware/dell/xps/15-9550> 
     # Include the results of the hardware scan.
