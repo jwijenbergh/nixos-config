@@ -27,14 +27,13 @@ in
     neofetch
     pass
     pulsemixer
+    powerline-fonts
     shadowfox
     signal-desktop
     spotify
-    tealdeer
     teamspeak_client
     vscodium
     zathura
-    unstable.android-studio
     unstable.bitwarden-cli
     unstable.protonmail-bridge
   ];
