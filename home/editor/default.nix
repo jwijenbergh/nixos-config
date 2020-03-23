@@ -1,7 +1,6 @@
 {
-  # Emacs and neovim config
+  # Neovim config
   imports = [
-    ./emacs
     ./neovim
   ];
 }
