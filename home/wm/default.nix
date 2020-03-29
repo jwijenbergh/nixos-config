@@ -44,9 +44,7 @@
 
   # Run dwm in a loop
   xsession.windowManager.command = ''
-    while true; do
-      ${pkgs.dwm}/bin/dwm >/dev/null 2>&1
-    done
+    ${pkgs.dwm}/bin/dwm >/dev/null 2>&1
   '';
 
   # Fix java programs
