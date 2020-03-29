@@ -1,1 +1,0 @@
-{ current = import ./dracula.nix; }
