@@ -1,15 +1,12 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'dracula/vim' " Colorscheme
 Plug 'itchyny/lightline.vim' " Status line
 Plug 'LnL7/vim-nix' " Syntax highlighting for .nix files
 Plug 'ruudjelinssen/proverif-pi-vim'
+" Using plug
+Plug 'dylanaraps/wal.vim'
 
 call plug#end()
-
-let g:lightline = {
-      \ 'colorscheme': 'dracula',
-      \ }
 
 set number relativenumber
 set nu rnu
@@ -18,8 +15,9 @@ syntax on
 set mouse=a
 
 set background=dark
-colorscheme dracula
-set termguicolors
+colorscheme wal
+
+let g:lightline = {'colorscheme': 'wombat'}
 
 au BufRead,BufNewFile *.pv setfiletype proverif
 set t_Co=256
