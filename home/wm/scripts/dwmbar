@@ -1,0 +1,22 @@
+#!/bin/sh
+
+_bat() {
+	echo  "$(cat /sys/class/power_supply/BAT0/capacity)"%
+}
+
+_date() {
+	echo  "$(date '+%H:%M - %d %B')"
+}
+
+_vol() {
+	echo  "$(pulsemixer --get-volume | awk '{print $1}')"
+}
+
+trap 'echo "SIGUSR1, reloading...."' USR1
+
+while :
+do
+	xsetroot -name " $(_bat)  $(_vol)  $(_date)"
+	sleep 60 &
+	wait $!
+done
