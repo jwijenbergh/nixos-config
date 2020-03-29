@@ -13,7 +13,7 @@
   # Set caps to ctrl
   home.keyboard.options = [ "ctrl:nocaps" ];
 
-  # Always set bg with feg in xorg
+  # Always set bg with feh in xorg
   home.file.".xprofile".text = ''
     feh --bg-scale $HOME/Pictures/Wallpapers/current.png
   '';
