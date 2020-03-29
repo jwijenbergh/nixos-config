@@ -36,13 +36,13 @@ in
       pulsemixer
       pywal
       shadowfox
+      spotify
       zathura
 
       # Unstable packages
       unstable.bitwarden-cli
       unstable.pfetch
       unstable.protonmail-bridge
-      unstable.spotify-tui
       unstable.ueberzug
     ];
 
