@@ -17,28 +17,32 @@ in
 
     # Base packages
     home.packages = with pkgs; [
-      discord
-      exa
-      firefox
-      font-awesome_4
-      htop
+      # Dev
       idea.idea-community
+
+      # Fonts
+      font-awesome_4
       iosevka
-      mpv
-      pass
-      pulsemixer
       powerline-fonts
-      python37Packages.pywal
-      shadowfox
+
+      # Messaging
+      discord
       signal-desktop
-      spotify
       teamspeak_client
+
+      # Other
+      firefox
+      mpv
+      pulsemixer
+      pywal
+      shadowfox
       zathura
 
-      # Some unstable packages
+      # Unstable packages
       unstable.bitwarden-cli
       unstable.pfetch
       unstable.protonmail-bridge
+      unstable.spotify-tui
       unstable.ueberzug
     ];
 
