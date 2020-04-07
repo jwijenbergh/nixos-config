@@ -37,4 +37,8 @@
        st.color15:          {color15}
     '';
   };
+
+  xresources.extraConfig = ''
+    st.font: Iosevka:pixelsize=18
+  '';
 }
