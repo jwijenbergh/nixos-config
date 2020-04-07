@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
 let
   unstable = import <nixpkgs-unstable> {};
@@ -15,20 +15,23 @@ in
       ./wm # Dwm
     ];
 
+    # Let home manager manage fontconfig
+    fonts.fontconfig.enable = lib.mkForce true;
+
     # Base packages
     home.packages = with pkgs; [
-      # Dev
-      idea.idea-community
-
       # Fonts
-      font-awesome_4
       iosevka
-      powerline-fonts
+      font-awesome_4
 
       # Messaging
       discord
       signal-desktop
       teamspeak_client
+
+      # Uni
+      anki
+      texlive.combined.scheme-full
 
       # Other
       firefox
