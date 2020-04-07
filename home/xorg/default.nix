@@ -6,8 +6,10 @@
     betterlockscreen
     feh
     flameshot
+    rofi
     sxiv
-    xclip 
+    xclip
+    xdotool
   ];
 
   # Set caps to ctrl
@@ -15,7 +17,11 @@
 
   # Always set bg with feh in xorg
   home.file.".xprofile".text = ''
+    xrdb -merge $HOME/.cache/wal/st
+    xrdb -merge $HOME/.cache/wal/dwm
+    xrdb -merge $HOME/.Xresources
     feh --bg-scale $HOME/Pictures/Wallpapers/current.png
+    wal -R
   '';
 
   # 'fixes' screen tearing
