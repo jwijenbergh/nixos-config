@@ -2,10 +2,8 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'itchyny/lightline.vim' " Status line
 Plug 'LnL7/vim-nix' " Syntax highlighting for .nix files
-Plug 'ruudjelinssen/proverif-pi-vim'
-" Using plug
-Plug 'dylanaraps/wal.vim'
-
+Plug 'dylanaraps/wal.vim' " Pywal colorscheme
+Plug 'preservim/nerdtree' " File browser pane
 call plug#end()
 
 set number relativenumber
@@ -34,3 +32,6 @@ set showmatch " Shows matching brackets
 set ruler " Always shows location in file (line#)
 set smarttab " Autotabs for certain code
 set shiftwidth=4
+
+" NerdTree
+map <C-n> :NERDTreeToggle<CR>
