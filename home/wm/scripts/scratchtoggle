@@ -1,0 +1,8 @@
+#!/bin/sh
+
+id=$(xdotool search --class scratchterm)
+if [ -z "$id" ]; then
+    st -c scratchterm
+else
+    bspc node "$id" --flag hidden -f
+fi

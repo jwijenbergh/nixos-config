@@ -1,53 +1,60 @@
 { pkgs, ... }:
-
 {
-  # Scripts and packages
-  home.packages = with pkgs; [
-    # Scripts
-    (writeScriptBin "dwmbar" (builtins.readFile ./scripts/dwmbar))
-    (writeScriptBin "refdwmbar" (builtins.readFile ./scripts/refdwmbar))
-
-    # Packages
-    dmenu
-    dwm
+  # Import X11 and Polybar
+  imports = [
+    ../xorg
+    ./polybar.nix
+    ./scripts
+    ./sxhkd.nix
   ];
 
-  # We need xorg
-  imports = [ ../xorg ];
-
-  # Use my own dwm build
-  nixpkgs.overlays = [
-    (self: super: {
-      dwm = super.dwm.overrideAttrs (oldAttrs: rec {
-        src = /home/jerry/Repos/dwm;
-      });
-    })
-  ];
-
-  # Start bar in .xprofile
-  home.file.".xprofile".text = ''
-    dwmbar &
-  '';
-
-  # Pywal template
-  xdg.configFile = 
-  {
-    "wal/templates/dwm".text = ''
-       dwm.normbordercolor: {color4}
-       dwm.normbgcolor:     {background}
-       dwm.normfgcolor:     {foreground}
-       dwm.selbordercolor:  {color1}
-       dwm.selbgcolor:      {color1}
-       dwm.selfgcolor:      {background}
+  # Bspwm settings
+  xsession.windowManager.bspwm = {
+    enable = true;
+    extraConfig = ''
+      pkill sxhkd
+      sxhkd &
+      pkill polybar
+      for m in $(polybar --list-monitors | cut -d":" -f1); do
+        MONITOR=$m polybar --reload top &
+      done
     '';
+    monitors = {
+      eDP-1 = [ "1" "2" "3" "4" "5" ];
+      DP-1 = [ "6" "7" "8" "9" "0" ];
+    };
+    rules = {
+      "emacs" = {
+        state = "tiled";
+      };
+      "scratchterm" = { 
+        state = "floating";
+        sticky = true;
+      };
+    };
+    settings = {
+      # Colors
+      normal_border_color = "#282c34";
+      active_border_color = "#e06c75";
+      focused_border_color = "#e06c75";
+      presel_feedback_color = "#98c379";
+
+      # Monitor settings
+      remove_disabled_monitors = true;
+      remove_unplugged_monitors = true;
+
+      # Other
+      border_width = 2;
+      window_gap = 10;
+      automatic_scheme = "alternate";
+      split_ratio = 0.52;
+      borderless_monocle = true;
+      gapless_monocle = true;
+      focus_follows_pointer = true;
+    };
   };
 
-  # Run dwm in a loop
-  xsession.windowManager.command = ''
-    ${pkgs.dwm}/bin/dwm >/dev/null 2>&1
-  '';
-
-  # Fix java programs
+  # Fix Java programs
   pam.sessionVariables = {
     _JAVA_AWT_WM_NONREPARENTING = "1";
   };
