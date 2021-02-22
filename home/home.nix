@@ -1,57 +1,96 @@
 { pkgs, lib, config, ... }:
-
 let
-  unstable = import <nixpkgs-unstable> {};
+  unstable = import <nixos-unstable> {};
 in
-  {
-    # Allow unfree
-    nixpkgs.config.allowUnfree = true;
+{
+  # Allow unfree
+  nixpkgs.config.allowUnfree = true;
 
-    # Various modules with other packages and associated configuration
-    imports = [
-      ./editor # Neovim and vscode config
-      ./shell # Shell with utilities
-      ./terminal # St
-      ./wm # Dwm
-    ];
+  # Various modules with other packages and associated configuration
+  imports = [
+    ./editor # Emacs config
+    ./shell # Shell with utilities
+    ./terminal # St
+    ./wm/hlwm # wm
+  ];
 
-    # Let home manager manage fontconfig
-    fonts.fontconfig.enable = lib.mkForce true;
 
-    # Base packages
-    home.packages = with pkgs; [
-      # Fonts
-      iosevka
-      font-awesome_4
+  nixpkgs.overlays = [
+    (self: super: {
+      doh-proxy = super.doh-proxy.overrideAttrs (oldAttrs: rec {
+        src = "/home/jerry/Repos/doh-proxy";
+        dontUnpack = true;
+      });
+    })
+  ];
 
-      # Messaging
-      discord
-      signal-desktop
-      teamspeak_client
+  # Let home manager manage fontconfig
+  fonts.fontconfig.enable = lib.mkForce true;
 
-      # Uni
-      anki
-      texlive.combined.scheme-full
+  # Base packages
+  home.packages = with pkgs; [
+#    doh-proxy
 
-      # Other
-      firefox
-      mpv
-      pulsemixer
-      pywal
-      shadowfox
-      spotify
-      zathura
+    # Fonts
+    noto-fonts
+    iosevka
+    font-awesome_4
 
-      # Unstable packages
-      unstable.bitwarden-cli
-      unstable.pfetch
-      unstable.protonmail-bridge
-      unstable.ueberzug
-    ];
+    # Messaging
+    discord
+    signal-desktop
+    teamspeak_client
 
-    # Enable home manager
-    programs.home-manager.enable = true;
+    # Uni
+    anki
+    texlive.combined.scheme-full
 
-    # Manage .config
-    xdg.enable = true;
-  }
+    # Other
+    mpv
+    pulsemixer
+    pywal
+    spotify
+    zathura
+
+    teams
+
+    bitwarden
+    bitwarden-cli
+    protonmail-bridge
+    ueberzug
+
+    skype
+    steam
+
+    vscodium
+    unstable.ledger-live-desktop
+  ];
+
+  programs.firefox = {
+    enable = true;
+    profiles = {
+      jerry = {
+        userChrome = ''
+#tabbrowser-tabpanels {
+  background: var(--toolbar-bgcolor) !important;
+}
+        '';
+        userContent = ''
+@-moz-document url-prefix(about:blank) {*{background-color:#333333;}}
+        '';
+        settings = {
+          "browser.startup.homepage" = "https://nixos.org";
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        };
+      };
+    };
+  };
+
+  services.network-manager-applet.enable = true;
+
+  # Enable home manager
+  programs.home-manager.enable = true;
+
+  # Manage .config
+  xdg.enable = true;
+}

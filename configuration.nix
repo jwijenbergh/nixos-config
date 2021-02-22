@@ -5,106 +5,114 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ 
-    # XPS 13 9350 is pretty much the xps 15 9550 but 13 inch
-    <nixos-hardware/dell/xps/15-9550> 
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
 
-    # Include my own home-manager repo to cherry pick modules
-    "${builtins.fetchGit {
-      ref = "release-19.09";
-      url = "https://github.com/jwijenbergh/home-manager";
-    }}/nixos"
-  ];
-
-  # Full disk encryption
-  boot.initrd.luks.devices = [
-    {
-      name = "root";
-      device = "/dev/nvme0n1p2";
-      preLVM = true;
-    }
-  ];
+      # Use home manager
+      "${builtins.fetchGit {
+        ref = "release-20.09";
+        url = "https://github.com/jwijenbergh/home-manager";
+      }}/nixos"
+    ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.loader.grub = {
+    enable = true;
+    version = 2;
+    efiSupport = true;
+    enableCryptodisk = true;
+    device = "nodev";
+  };
 
-  # Networking config
-  networking.hostName = "xps"; # Define your hostname.
-  networking.networkmanager.enable = true;
+  boot.initrd.luks.devices = {
+    root = {
+      device = "/dev/disk/by-uuid/ccc6e167-2ed2-48b3-8f57-6abdf2a02460";
+      preLVM = true;
+    };
+  };
+
+  networking.hostName = "nixie"; # Define your hostname.
+  networking.networkmanager.enable = true; # Use network manager
+  networking.iproute2.enable = true;
+  #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  # Set your time zone.
+  time.timeZone = "Europe/Amsterdam";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.wlp58s0.useDHCP = true;
+  networking.interfaces.enp0s31f6.useDHCP = true;
+  networking.interfaces.wlp3s0.useDHCP = true;
 
-  # Set your time zone.
-  time.timeZone = "Europe/Amsterdam";
-
-  # environment.systemPackages = with pkgs; [
-  # ];
-
-  programs = { 
-    fish.enable = true;
-    light.enable = true;
-    nm-applet.enable = true;
-  };
-
-  # List services that you want to enable:
-  services.dbus.packages = [ pkgs.gnome3.dconf ];
-  services.udev.packages = [ pkgs.stlink ];
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+  services.avahi.enable = true;
+  services.mullvad-vpn.enable = true;
 
   services.xserver = {
     enable = true;
     libinput.enable = true;
-    displayManager.lightdm.enable = true;
-    desktopManager = {
-      session = [{
-        name = "home-manager";
-        start = ''
-          ${pkgs.runtimeShell} $HOME/.hm-xsession &
-          waitPID=$!
-        '';
-      }];
-      default = "home-manager";
-    };
+    displayManager.startx.enable = true;
   };
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio = {
-    enable = true;
-    package = pkgs.pulseaudioFull;
+  hardware = {
+    opengl = {
+      driSupport = true;
+      driSupport32Bit = true;
+      extraPackages32 = with pkgs.pkgsi686Linux; [ libva vaapiIntel ];
+      extraPackages = with pkgs; [
+	      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+	      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+	      vaapiVdpau
+	      libvdpau-va-gl
+      ];
+    };
+    pulseaudio = {
+      enable = true;
+      support32Bit = true;
+    };
   };
 
-  # Bluetooth breaks my wireless adapter sometimes, solutions do not seem to work.
-  #hardware.bluetooth.enable = true;
+  programs = {
+    adb.enable = true;
+    light.enable = true;
+  };
 
-  # Need docker sometimes
-  virtualisation.docker.enable = true;
+  # Needed for piper
+  services.ratbagd.enable = true;
+
+  # Power management
+  services.tlp.enable = true;
+  services.upower.enable = true;
+
   virtualisation.virtualbox.host.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.jerry = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "networkmanager" "dialout" "docker" "vboxusers" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "video" "vboxusers" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.fish;
   };
 
-  # Home manager config
-  home-manager.users.jerry = { pkgs, ... }: {
+  # Home manager
+  home-manager.users.jerry = { pkgs, ...}: {
     imports = [ ./home/home.nix ];
   };
 
-  # This value determines the NixOS release with which your system is to be
-  # compatible, in order to avoid breaking some software such as database
-  # servers. You should change this only after NixOS release notes say you
-  # should.
-  system.stateVersion = "19.09"; # Did you read the comment?
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "20.09"; # Did you read the comment?
 
 }
 

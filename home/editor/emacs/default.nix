@@ -1,36 +1,57 @@
-{ pkgs, ... }:
-
+{ pkgs, lib, ... }:
 let
-  unstable = import <nixpkgs-unstable> {};
+  unstable = import <nixos-unstable> { overlays = [(import (builtins.fetchTarball {
+    url = https://github.com/nix-community/emacs-overlay/archive/0fe62fbeb3e30fe4eb5feefa65b31d509e82c5e8.tar.gz;}))];};
 in
 {
-  # Set emacs packages
+  home.packages = with pkgs; [
+    emacs-all-the-icons-fonts
+    (pkgs.writeScriptBin "vterm-wrappers-fzf-rg-preview.sh" (builtins.readFile ./vterm-wrappers-fzf-rg-preview.sh))
+  ];
+  nixpkgs.overlays = [
+	  (import (builtins.fetchTarball {
+	url = https://github.com/nix-community/emacs-overlay/archive/474bafd0d5c59410afcd4d6f95b8e85a6781ff2c.tar.gz;
+		   }))
+  ];
   programs.emacs = {
     enable = true;
-    package = unstable.emacs;
+    package = pkgs.emacsGcc;
     extraPackages = epkgs: with epkgs; [
-      company
-      company-nixos-options
-      counsel
-      dracula-theme
+      bicycle
+      dashboard
+      deadgrep
+      doom-modeline
+      doom-themes
       evil
       evil-collection
+      evil-easymotion
       evil-magit
+      flycheck
       fzf
-      htmlize
-      nix-mode
+      general
+      haskell-mode
+      lua-mode
       magit
+      mini-frame
+      nix-mode
       org-bullets
-      rust-mode
-      telephone-line
+      posframe
+      rg
+      selectrum
+      selectrum-prescient
+      prescient
+      consult
       use-package
+      vterm
+      with-editor
       which-key
+      transient
     ];
   };
 
+  home.file.".emacs.d/init.el".source = ./init.el;
+  home.file.".emacs.d/early-init.el".source = ./early-init.el;
+
   # Enable emacs daemon
   services.emacs.enable = true;
-
-  # Emacs config file
-  home.file.".emacs.d/init.el".source = ./init.el;
 }
