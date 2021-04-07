@@ -3,14 +3,13 @@ let
   theme = (import ../env.nix).theme;
 in
 {
-  imports = [ ./scripts ];
+  imports = [ ./scripts ./rofi ./dunst ];
 
   # Some packages
   home.packages = with pkgs; [
     betterlockscreen
     feh
     flameshot
-    rofi
     sxiv
     xclip
     xdotool

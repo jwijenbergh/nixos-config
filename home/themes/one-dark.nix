@@ -1,13 +1,15 @@
 {
-  foreground = "ABB2BF";
-  background = "1E2127";
-  color0 = "1E2127";
-  color8 = "5C6370";
+  # original fg: #ABB2BF
+  foreground = "E1E5ED";
+  background = "282C34";
+  cursorColor = "ABB2BF";
+  color0 = "5C6370";
+  color8 = "4B5263";
   color1 = "E06C75";
-  color9 = "E06C75";
+  color9 = "BE5046";
   color2 = "98C379";
   color10 = "98C379";
-  color3 = "D19A66";
+  color3 = "E5C07B";
   color11 = "D19A66";
   color4 = "61AFEF";
   color12 = "61AFEF";
@@ -16,5 +18,5 @@
   color6 = "56B6C2";
   color14 = "56B6C2";
   color7 = "ABB2BF";
-  color15 = "FFFFFF";
+  color15 = "3E4452";
 }

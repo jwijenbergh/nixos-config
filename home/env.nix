@@ -1,3 +1,3 @@
 {
-  theme = (import ./themes/gruvbox.nix);
+  theme = (import ./themes/one-dark.nix);
 }

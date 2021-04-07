@@ -11,9 +11,8 @@ in
     ./editor # Emacs config
     ./shell # Shell with utilities
     ./terminal # St
-    ./wm/hlwm # wm
+    ./wm/qtile # wm
   ];
-
 
   nixpkgs.overlays = [
     (self: super: {
@@ -33,8 +32,7 @@ in
 
     # Fonts
     noto-fonts
-    iosevka
-    font-awesome_4
+    (nerdfonts.override { fonts = [ "Iosevka" ]; }) 
 
     # Messaging
     discord
@@ -44,6 +42,7 @@ in
     # Uni
     anki
     texlive.combined.scheme-full
+    unstable.jabref
 
     # Other
     mpv

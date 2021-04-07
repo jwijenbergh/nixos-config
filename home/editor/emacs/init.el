@@ -18,7 +18,7 @@
 		  file-name-handler-alist default-file-name-handler-alist)))
 
 ;; Settings
-(add-to-list 'default-frame-alist '(font . "Iosevka-15"))
+(add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-15"))
 (setq-default xterm-query-timeout nil)
 
 ;; Separate file for custom-set-variables
@@ -46,7 +46,7 @@
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-gruvbox t))
+  (load-theme 'doom-vibrant t))
 
 (use-package doom-modeline
   :config (doom-modeline-mode 1))
@@ -183,16 +183,20 @@ The prefix map is named 'my-DEF-map'."
 (use-package fzf)
 
 (use-package selectrum
-  :load-path "/home/jerry/Repos/selectrum"
   :config
   (selectrum-mode +1))
 
-(use-package selectrum-prescient
-  :config
-  (selectrum-prescient-mode +1))
+(use-package page-break-lines)
 
-(use-package prescient
-  :after selectrum)
+(use-package orderless
+  :after selectrum
+  :config
+  (setq completion-styles '(orderless))
+
+  ;; Optional performance optimization
+  ;; by highlighting only the visible candidates.
+  (setq orderless-skip-highlighting (lambda () selectrum-is-active))
+  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
 
 (use-package consult
   :load-path "/home/jerry/Repos/consult"

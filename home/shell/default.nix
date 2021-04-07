@@ -20,13 +20,13 @@ in
     fish = {
       enable = true;
       shellAbbrs = {
-        e = "emacsclient -c";
+        e = "nvim";
         ls = "exa -l";
         ll = "exa -al";
         f = "nnn";
       };
       shellInit = ''
-        set -gx EDITOR emacs
+        set -gx EDITOR nvim
         function fish_greeting; end
         set -U fish_prompt_pwd_dir_length 0
 	      set -U fish_color_normal normal

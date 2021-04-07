@@ -23,6 +23,6 @@ in
   };
 
   xresources.extraConfig = ''
-    st.font: Iosevka:pixelsize=18
+    st.font: Iosevka Term:pixelsize=20
   '';
 }

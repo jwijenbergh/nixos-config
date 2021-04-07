@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 let
   unstable = import <nixos-unstable> { overlays = [(import (builtins.fetchTarball {
-    url = https://github.com/nix-community/emacs-overlay/archive/0fe62fbeb3e30fe4eb5feefa65b31d509e82c5e8.tar.gz;}))];};
+    url = https://github.com/nix-community/emacs-overlay/archive/d9530a7048f4b1c0f65825202a0ce1d111a1d39a.tar.gz;}))];};
 in
 {
   home.packages = with pkgs; [
@@ -10,7 +10,7 @@ in
   ];
   nixpkgs.overlays = [
 	  (import (builtins.fetchTarball {
-	url = https://github.com/nix-community/emacs-overlay/archive/474bafd0d5c59410afcd4d6f95b8e85a6781ff2c.tar.gz;
+	url = https://github.com/nix-community/emacs-overlay/archive/d9530a7048f4b1c0f65825202a0ce1d111a1d39a.tar.gz;
 		   }))
   ];
   programs.emacs = {
@@ -38,8 +38,7 @@ in
       posframe
       rg
       selectrum
-      selectrum-prescient
-      prescient
+      orderless
       consult
       use-package
       vterm
