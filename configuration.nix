@@ -25,19 +25,24 @@
     efiSupport = true;
     enableCryptodisk = true;
     device = "nodev";
+    useOSProber = true;
   };
 
   boot.initrd.luks.devices = {
     root = {
-      device = "/dev/disk/by-uuid/ccc6e167-2ed2-48b3-8f57-6abdf2a02460";
+      device = "/dev/disk/by-uuid/8181bac2-7bd8-4e87-b840-2c7cb3ce1d8c";
       preLVM = true;
     };
   };
 
-  networking.hostName = "nixie"; # Define your hostname.
+  environment.systemPackages = [ pkgs.ntfs3g ];
+
+  networking.hostName = "deskie"; # Define your hostname.
   networking.networkmanager.enable = true; # Use network manager
   networking.iproute2.enable = true;
   #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  nixpkgs.config.allowUnfree = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Amsterdam";
@@ -46,8 +51,7 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp0s31f6.useDHCP = true;
-  networking.interfaces.wlp3s0.useDHCP = true;
+  networking.interfaces.enp6s0.useDHCP = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -58,6 +62,7 @@
     enable = true;
     libinput.enable = true;
     displayManager.startx.enable = true;
+    videoDrivers = [ "nvidia" ];
   };
 
   # Enable sound.
@@ -66,13 +71,6 @@
     opengl = {
       driSupport = true;
       driSupport32Bit = true;
-      extraPackages32 = with pkgs.pkgsi686Linux; [ libva vaapiIntel ];
-      extraPackages = with pkgs; [
-	      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-	      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-	      vaapiVdpau
-	      libvdpau-va-gl
-      ];
     };
     pulseaudio = {
       enable = true;
@@ -89,15 +87,18 @@
   services.ratbagd.enable = true;
 
   # Power management
-  services.tlp.enable = true;
+  #services.tlp.enable = true;
   services.upower.enable = true;
 
-  virtualisation.virtualbox.host.enable = true;
+  virtualisation = {
+    virtualbox.host.enable = true;
+    docker.enable = true;
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.jerry = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" "vboxusers" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "video" "vboxusers" "docker" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.fish;
   };
 
