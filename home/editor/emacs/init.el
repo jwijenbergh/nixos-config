@@ -120,16 +120,11 @@ The prefix map is named 'my-DEF-map'."
 (use-package evil-easymotion
   :after evil)
 
-(use-package evil-magit
-  :after evil magit)
-
 (use-package lua-mode)
 
 (use-package magit
   :after general
-  :config
-  ;; automatically refresh magit buffer
-  (add-hook 'after-save-hook 'magit-after-save-refresh-status t)
+  :hook (after-save . magit-after-save-refresh-status)
   :general
   (general-global-git "s" 'magit-status))
 
@@ -140,7 +135,7 @@ The prefix map is named 'my-DEF-map'."
   :load-path "/home/jerry/Repos/emacs-vtermfloat-dev"
   :config
   (setq vterm-timer-delay 0.01)
-  (setq vterm-wrappers-posframe-enable t)
+  (setq vterm-wrappers-posframe-enable nil)
   (setq vterm-wrappers-fzf-rg-phony nil)
   (setq vterm-wrappers-fzf-opt '("--reverse"))
   :general
@@ -155,7 +150,7 @@ The prefix map is named 'my-DEF-map'."
     "u" 'vterm-wrappers-show))
 
 (use-package org
-  :mode (("\\.org$" . org-mode))
+  :mode ("\\.org$" . org-mode)
   :hook (org-mode . visual-line-mode)
   :config
   (setq org-startup-indented t))
@@ -170,7 +165,7 @@ The prefix map is named 'my-DEF-map'."
   (which-key-mode 1))
 
 (use-package nix-mode
-  :mode "\\.nix\\'")
+  :mode "\\.nix$")
 
 (use-package with-editor)
 
@@ -207,15 +202,29 @@ The prefix map is named 'my-DEF-map'."
   :after selectrum
   :load-path "/home/jerry/Repos/consult")
 
-;(use-package mini-frame
-;  :init
-;  (custom-set-variables
-;   '(mini-frame-show-parameters
-;     '((top . 0.35)
-;       (width . 0.7)
-;       (left . 0.5))))
-;  :config
-;  (mini-frame-mode 1))
+					;(use-package mini-frame
+					;  :init
+					;  (custom-set-variables
+					;   '(mini-frame-show-parameters
+					;     '((top . 0.35)
+					;       (width . 0.7)
+					;       (left . 0.5))))
+					;  :config
+					;  (mini-frame-mode 1))
+
+(use-package tex-site
+  :ensure auctex
+  :mode ("\\.tex$" . TeX-latex-mode)
+  :hook (LaTeX-mode . TeX-source-correlate-mode)
+  :config
+  (setq TeX-view-program-selection '((output-pdf "Zathura")))
+
+  ;; my master file is called main.tex
+  (setq-default TeX-master "main")
+
+  ;; correlate
+  (setq TeX-source-correlate-method 'synctex)
+  (setq TeX-source-correlate-start-server nil))
 
 (use-package bicycle
   :after outline
@@ -223,7 +232,10 @@ The prefix map is named 'my-DEF-map'."
 	      ([C-tab] . bicycle-cycle)
 	      ([backtab] . bicycle-cycle-global)))
 
-(use-package prog-mode
+(use-package highlight-indent-guides
+  :hook (prog-mode . highlight-indent-guides-mode)
   :config
-  (add-hook 'prog-mode-hook 'outline-minor-mode)
-  (add-hook 'prog-mode-hook 'hs-minor-mode))
+  (setq highlight-indent-guides-method 'character))
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))

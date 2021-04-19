@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 let
   unstable = import <nixos-unstable> { overlays = [(import (builtins.fetchTarball {
-    url = https://github.com/nix-community/emacs-overlay/archive/d9530a7048f4b1c0f65825202a0ce1d111a1d39a.tar.gz;}))];};
+    url = https://github.com/nix-community/emacs-overlay/archive/26f0a5e1d1f3934f0d6596b2c411dba52e6d7211.tar.gz;}))];};
 in
 {
   home.packages = with pkgs; [
@@ -9,14 +9,15 @@ in
     (pkgs.writeScriptBin "vterm-wrappers-fzf-rg-preview.sh" (builtins.readFile ./vterm-wrappers-fzf-rg-preview.sh))
   ];
   nixpkgs.overlays = [
-	  (import (builtins.fetchTarball {
-	url = https://github.com/nix-community/emacs-overlay/archive/d9530a7048f4b1c0f65825202a0ce1d111a1d39a.tar.gz;
-		   }))
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/emacs-overlay/archive/26f0a5e1d1f3934f0d6596b2c411dba52e6d7211.tar.gz;
+    }))
   ];
   programs.emacs = {
     enable = true;
     package = pkgs.emacsGcc;
     extraPackages = epkgs: with epkgs; [
+      auctex
       bicycle
       dashboard
       deadgrep
@@ -25,17 +26,18 @@ in
       evil
       evil-collection
       evil-easymotion
-      evil-magit
       flycheck
       fzf
       general
       haskell-mode
+      highlight-indent-guides
       lua-mode
       magit
       mini-frame
       nix-mode
       org-bullets
       posframe
+      rainbow-delimiters
       rg
       selectrum
       orderless
