@@ -1,0 +1,68 @@
+diff --git a/bin/qtile b/bin/qtile
+index e7c79696..2ddbe7cd 100755
+--- a/bin/qtile
++++ b/bin/qtile
+@@ -33,4 +33,5 @@ import libqtile.core.lifecycle  # noqa: F401, E402
+ from libqtile.scripts.main import main  # noqa: E402
+ 
+ if __name__ == '__main__':
++    __import__("importlib").import_module("libqtile.utils").restore_os_environment()
+     main()
+diff --git a/libqtile/backend/x11/xcursors.py b/libqtile/backend/x11/xcursors.py
+index 5748a56f..1179af32 100644
+--- a/libqtile/backend/x11/xcursors.py
++++ b/libqtile/backend/x11/xcursors.py
+@@ -107,7 +107,7 @@ class Cursors(dict):
+ 
+     def _setup_xcursor_binding(self):
+         try:
+-            xcursor = ffi.dlopen('libxcb-cursor.so.0')
++            xcursor = ffi.dlopen('@xcb-cursor@/lib/libxcb-cursor.so.0')
+         except OSError:
+             logger.info("xcb-cursor not found, fallback to font pointer")
+             return False
+diff --git a/libqtile/core/lifecycle.py b/libqtile/core/lifecycle.py
+index 3717e75d..99f361c2 100644
+--- a/libqtile/core/lifecycle.py
++++ b/libqtile/core/lifecycle.py
+@@ -33,7 +33,7 @@ class LifeCycle:
+                 argv.append('--with-state=' + self.state_file)
+             logger.warning('Restarting Qtile with os.execv(...)')
+             # No other code will execute after the following line does
+-            os.execv(sys.executable, argv)
++            os.execv(os.environ.get("QTILE_WRAPPER", "@out@/bin/qtile"), argv[1:])
+         elif self.behavior is Behavior.TERMINATE:
+             logger.warning('Qtile will now terminate')
+         elif self.behavior is Behavior.NONE:
+diff --git a/libqtile/pangocffi.py b/libqtile/pangocffi.py
+index dbae27ed..78e3ff89 100644
+--- a/libqtile/pangocffi.py
++++ b/libqtile/pangocffi.py
+@@ -52,9 +52,9 @@ try:
+ except ImportError:
+     raise ImportError("No module named libqtile._ffi_pango, be sure to run `./scripts/ffibuild`")
+ 
+-gobject = ffi.dlopen('libgobject-2.0.so.0')
+-pango = ffi.dlopen('libpango-1.0.so.0')
+-pangocairo = ffi.dlopen('libpangocairo-1.0.so.0')
++gobject = ffi.dlopen('@glib@/lib/libgobject-2.0.so.0')
++pango = ffi.dlopen('@pango@/lib/libpango-1.0.so.0')
++pangocairo = ffi.dlopen('@pango@/lib/libpangocairo-1.0.so.0')
+ 
+ 
+ def patch_cairo_context(cairo_t):
+diff --git a/libqtile/utils.py b/libqtile/utils.py
+index e1ea5991..75f07099 100644
+--- a/libqtile/utils.py
++++ b/libqtile/utils.py
+@@ -310,3 +310,10 @@ def scan_files(dirpath, *names):
+         files[name].extend(found)
+ 
+     return files
++
++def restore_os_environment():
++    pythonpath = os.environ.pop("QTILE_SAVED_PYTHONPATH", "")
++    os.environ["PYTHONPATH"] = pythonpath
++    path = os.environ.pop("QTILE_SAVED_PATH", None)
++    if path:
++        os.environ["PATH"] = path

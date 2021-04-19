@@ -8,6 +8,7 @@ in
   nixpkgs.overlays = [
     (self: super: {
       eww = super.callPackage ./eww.nix {};
+      qtile = super.callPackage ./qtile.nix {};
     })
   ];
 
@@ -39,7 +40,7 @@ colors = {
    "bar-widget-group-focused": "${theme.foreground}",
    "bar-widget-group-focused-othermon": "${theme.foreground}",
    "border-focus": "${theme.color3}",
-   "border-normal": "${theme.foreground}",
+   "border-normal": "${theme.background}",
 }'';
     "qtile/autostart.sh" = {
       executable = true;

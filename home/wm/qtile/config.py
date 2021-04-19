@@ -84,11 +84,8 @@ keys_str += f"{mod}-{help_key}: {help_desc}"
 
 def get_rofi_command(s, prompt):
     return {
-        # have to manually add sh -c ""
-        # the shell argument is added in 17.0
-        # currently using 16.0 not 17.0
-        # "shell": True,
-        "cmd":f"sh -c \"echo -en '{s}' | rofi -dmenu -p '{prompt}'\"",
+        "shell": True,
+        "cmd":f"echo -en '{s}' | rofi -dmenu -p '{prompt}'",
     }
 
 keys.extend([
@@ -105,6 +102,7 @@ default_layout_settings = {
 
 layouts = [
     layout.MonadTall(**default_layout_settings),
+    layout.MonadWide(**default_layout_settings),
     layout.Floating(**default_layout_settings),
 ]
 
@@ -223,23 +221,6 @@ main = None  # WARNING: this is deprecated and will be removed soon
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
-floating_layout = layout.Floating(float_rules=[
-    # Run the utility of `xprop` to see the wm class and name of an X client.
-    {'wmclass': 'confirm'},
-    {'wmclass': 'dialog'},
-    {'wmclass': 'download'},
-    {'wmclass': 'error'},
-    {'wmclass': 'file_progress'},
-    {'wmclass': 'notification'},
-    {'wmclass': 'splash'},
-    {'wmclass': 'toolbar'},
-    {'wmclass': 'confirmreset'},  # gitk
-    {'wmclass': 'makebranch'},  # gitk
-    {'wmclass': 'maketag'},  # gitk
-    {'wname': 'branchdialog'},  # gitk
-    {'wname': 'pinentry'},  # GPG key password entry
-    {'wmclass': 'ssh-askpass'},  # ssh-askpass
-])
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 
