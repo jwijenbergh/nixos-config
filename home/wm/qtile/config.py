@@ -43,15 +43,18 @@ keys = [
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod, "shift"], "c", lazy.window.kill(), desc="Kill focused window"),
 
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle tiled/floating"),
     Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Toggle fullscreen"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
-    Key([mod], "r", lazy.spawn(launcher),
-        desc="Spawn a command using a prompt widget"),
+    Key([mod], "r", lazy.spawn(launcher), desc="Open rofi"),
+    Key([mod], "w", lazy.to_screen(0), desc="Focus screen 0"),
+    Key([mod], "e", lazy.to_screen(1), desc="Focus screen 1"),
+    Key([mod, "shift"], "w", lazy.window.toscreen(0), desc="Move window to screen 0"),
+    Key([mod, "shift"], "e", lazy.window.toscreen(1), desc="Move window to screen 1"),
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -119,19 +122,22 @@ has_battery = False
 if len(os.listdir('/sys/class/power_supply')) > 0:
     has_battery = True
 
-widgets = [
+base_widgets = [
     widget.CurrentLayoutIcon(
         scale=0.6,
         padding=8,
     ),
     widget.GroupBox(
         hide_unused=True,
+        disable_drag=True,
         active=colors["bar-widget-group-active"],
         inactive=colors["bar-widget-group-inactive"],
         this_current_screen_border=colors["bar-accent"],
         highlight_color=[colors["bar-bg"], colors["bar-bg"]],
         highlight_method="line",
-    ),
+    )]
+
+widgets = base_widgets + [
     widget.Prompt(),
     widget.Spacer(),
     widget.Chord(
@@ -199,6 +205,13 @@ widgets += [
 screens = [
     Screen(
         top=bar.Bar(widgets,
+                    34,
+                    background=colors["bar-bg"],
+                    foreground=colors["bar-fg"],
+                    margin=[0, 0, 0, 0]),
+    ),
+    Screen(
+        top=bar.Bar(base_widgets,
                     34,
                     background=colors["bar-bg"],
                     foreground=colors["bar-fg"],
