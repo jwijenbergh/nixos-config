@@ -17,6 +17,11 @@ in
 
   # Shell + associated packages that need some configuration
   programs = {
+    direnv = {
+      enable = true;
+      enableNixDirenvIntegration = true;
+      enableFishIntegration = true;
+    };
     fish = {
       enable = true;
       shellAbbrs = {
